@@ -1,13 +1,13 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#define  _POSIX_C_SOURCE 200810L
-
+#define _GNU_SOURCE
 #include <stdio.h>
-#include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 #include <ctype.h>
-#include <stddef.h>
+#include <stdarg.h>
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -39,67 +39,62 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/**
-* struct hlp - argument for the current opcode
-* @data: stack mode, stack (default) and queue
-* @arg: arguments of the string
-*/
-typedef struct hlp
-{
-	int data;
-	char *arg;
-} hlp;
-hlp global;
+extern stack_t *head;
+typedef void (*op_func)(stack_t **, unsigned int);
 
-#define INSTRUC \
-{ \
-	{"push", push}, \
-	{"pall", pall}, \
-	{"pint", pint}, \
-	{"pop", pop}, \
-	{"swap", swap}, \
-	{"nop", nop}, \
-	{"div", div_}, \
-	{"mul", mul_}, \
-	{"add", add_}, \
-	{"sub", sub_}, \
-	{"mod", mod_}, \
-	{"pchar", pchar}, \
-	{"pstr", pstr}, \
-	{"rotl", rotl}, \
-	{"rotr", rotr}, \
-	{NULL, NULL} \
-}
 
-void div_(stack_t **s, unsigned int cnt);
-void add_(stack_t **s, unsigned int cnt);
-void sub_(stack_t **s, unsigned int cnt);
-void mul_(stack_t **s, unsigned int cnt);
-void mod_(stack_t **s, unsigned int cnt);
+/*task 0*/
+void stack_add(stack_t **new_node, __attribute__((unused))unsigned int ln); /*push*/
+void stack_print(stack_t **stack, unsigned int line_number); /*pall*/
 
-void push(stack_t **s, unsigned int cnt);
-void pall(stack_t **s, unsigned int cnt);
-void pint(stack_t **s, unsigned int cnt);
-void swap(stack_t **s, unsigned int cnt);
-void pop(stack_t **s, unsigned int cnt);
-void nop(stack_t **s, unsigned int cnt);
+/*main*/
+int main(int argc, char *argv[]);
+stack_t *neu_node(int n);
+void stack_free(void);
+void q_add(stack_t **neu_node, __attribute__((unused))unsigned int ln);
+size_t lenofstr(const char *str);
 
-void pchar(stack_t **s, unsigned int cnt);
-void pstr(stack_t **s, unsigned int cnt);
-void rotl(stack_t **s, unsigned int cnt);
-void rotr(stack_t **s, unsigned int cnt);
+/*o.r*/
+void of(char *file_name);
+void readf(FILE *fd);
 
-stack_t *addnode(stack_t **s, const int num);
-stack_t *queue(stack_t **s, const int nod);
-void freestk(stack_t *s);
-size_t printstk(const stack_t *s);
+/*error*/
+void eror(int error_code, ...);
+void eror1(int error_code, ...);
 
-void fileer(char *av);
-void erusage(void);
+/*func*/
+int sep_line(char *buffer, int line_number, int format);
+void func_finder(char *opcode, char *value, int ln, int format);
+void b_called(op_func func, char *op, char *val, int ln, int format);
 
-int isdig(char *str);
-int isnum(char *str);
+/*head*/
+extern stack_t *head;
 
-void op_code(stack_t **s, char *str, unsigned int cnt);
+/*pint*/
+void pin(stack_t **stack, unsigned int line_number);
+
+/*pop*/
+void pop_lol(stack_t **stack, unsigned int line_number);
+
+/*the ol swapin method*/
+void n_swaper(stack_t **stack, unsigned int line_number);
+
+/*add op*/
+void t_add(stack_t **stack, unsigned int line_number);
+
+/*useless*/
+void nope_lol(stack_t **stack, unsigned int line_number);
+
+/*calc*/
+void sub_ig(stack_t **stack, unsigned int line_number);
+void div_ig(stack_t **stack, unsigned int line_number);
+void mul_ig(stack_t **stack, unsigned int line_number);
+void mod_c(stack_t **stack, unsigned int line_number);
+
+/*rotl rotr*/
+void op_rotr(stack_t **stack, __attribute__((unused))unsigned int ln);
+void op_rotl(stack_t **stack, __attribute__((unused))unsigned int ln);
+
+
 
 #endif
